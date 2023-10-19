@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Black Jack Game</title>
+</head>
+<body>
+    <h1>BLACK JACK GAME</h1>
+    <p id="message-el">Do you want to play a round?</p>
+    <p id="cards-el">Cards:</p>
+    <p id="sum-el">Sum:</p>
+    <button id="start" onclick="startGame()">START GAME</button>
+    <button id="start" onclick="newCard()">NEW CARD</button>
+    <p id="name-el">Manasi: $5000</p>
+    <button id="add" onclick="addMoney()">ADD $100</button>
+    <p id="bets-el">Currently Placed bets: $0</p>
+    <button id="display" onclick="display()">STOP THE GAME</button>
+    <p id="loss-el">  </p><br><br>
+    <div class="desc">
+        <p id="description-el">Game Description:</p>
+        <p>STEP 1: Click on "START GAME".</p>
+        <p>STEP 2: If you get two cards with a sum of "21" you win the game. </p>
+        <p>STEP 3: If not, then place your bets and draw a new card, keep doing it until you get "21".</p>
+        <p>STEP 4: If you get the score "21", you win 2x money otherwise you lose that money.</p>
+        <p>STEP 5: Once you click "STOP THE GAME", the money lost will be displayed on your screen.</p>
+        <p>STEP 6: I hope you get the game the game now. All the best and Gamble carefully. </p>
+    </div><br><br>
+    <script src="index.js"></script>
+</body>
+</html>
