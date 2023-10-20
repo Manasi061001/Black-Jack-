@@ -1,41 +1,48 @@
+// VARIABLES
+
 let cards = []
-let count = 5000
-let counts = 0
-let profit = 0
-let sum = 0
 let message = ""
-let messageEl = document.getElementById("message-el")
-let sumEl = document.getElementById("sum-el")
-let cardsEl = document.getElementById("cards-el")
-let nameEl = document.getElementById("name-el")
-let betsEL = document.getElementById("bets-el")
-let lossEl = document.getElementById("loss-el")
+let sum = 0
+let actualCount = 0
+let initialCount = 0
+let betMoney = 0
+let profit = 0
+let loss = 0
+let addProfit = 0
+let isGameOver = false;
+let isNewCardDrawn = false;
 
-function addMoney() {
-    if (sum < 21) {
-        count -= 100
-        counts += 100 
-        nameEl.textContent = "Manasi: $" + count
-        betsEL.textContent = "Currently Placed bets: $" + counts
+// VARIABLE ID's
+
+let titleEl = document.getElementById("title")
+let cardsEl = document.getElementById("cards-drawn")
+let sumEl = document.getElementById("sum-formed")
+let startEl = document.getElementById("start-game")
+let newEl = document.getElementById("new-card")
+let nameEl = document.getElementById("player-name")
+let addEl = document.getElementById("add-money")
+let showEl = document.getElementById("show-money")
+let displayEl = document.getElementById("display-result")
+let resultEl = document.getElementById("result-message")
+
+// START BUTTON
+
+function startGame(){
+    if (isGameOver) {
+        return; 
     }
-    renderGame()
-}
-
-function display() {
-    if (sum > 21) {
-        lossEl.textContent = "You Lose: $" + (5000 - count)
-    } else if (sum === 21) {
-        lossEl.textContent = "You Win: $" + Math.abs(profit - count)
+    if(initialCount === 0){
+        initialCount = prompt ("Enter the total amount you want to bet: ")
+        nameEl.textContent = "Manasi: $" + initialCount
+        console.log(initialCount)
+        actualCount += parseFloat(initialCount)
+    } 
+    if (actualCount === 0){
+        nameEl.textContent = "SORRY YOU HAVE LOST ALL YOUR MONEY. PLEASE REFRESH TO START A NEW GAME"
     }
-}
-
-function getRandomCard() {
-    let randomNumer = Math.floor(Math.random() * 13) + 1
-    return randomNumer
-}
-
-function startGame() {
-    counts = 0
+    betMoney = 0
+    showEl.textContent = "Currently Placed bets: $" + 0
+    resultEl.textContent = "ALL THE BEST"
     let firstCard = getRandomCard()
     let secondCard = getRandomCard()
     cards = [firstCard, secondCard]
@@ -43,30 +50,84 @@ function startGame() {
     renderGame()
 }
 
-function renderGame() {
-    cardsEl.textContent = "Cards: "
-    for (let i = 0; i < cards.length; i++) {
-        cardsEl.textContent += cards[i] + " "
+// ADD MONEY BUTTON
+
+function addMoney(){
+    if (isGameOver) {
+        return; 
     }
-    sumEl.textContent = "Sum: " + sum
-    if (sum <= 20) {
-        message = "Do you want to draw a new card?"
-    } else if (sum === 21) {
-        profit = Math.abs(count * 2)
-        nameEl.textContent = "Manasi: $" + profit
-        message = "You've got Blackjack!"
-    } else {
-        message = "You're out of the game!"
-        betsEL.textContent = "Currently Placed bets: $0"
+    if (sum < 21 && actualCount > 0){ 
+        actualCount -= 100 
+        betMoney += 100
+        nameEl.textContent = "Manasi: $" + actualCount
+        showEl.textContent = "Currently Placed bets: $"+ betMoney
     }
-    messageEl.textContent = message
+    renderGame()
 }
 
+// DISPLAY THE RESULT BUTTON 
+
+function stopGame(){
+    if (isNewCardDrawn) {
+        loss = initialCount - actualCount
+        if(sum != 21){
+            resultEl.textContent = "You Lost: $" + loss
+        } else if(sum === 21) {
+            resultEl.textContent = "You Won: $"+profit
+        }
+    } 
+    renderGame()
+}
+
+// NEW CARD BUTTON
+
 function newCard() {
-    if (sum < 21) {
+    if (isGameOver) {
+        return; 
+    }
+    // if (isPlaying === true && hasBlackJack === false) 
+    if (sum < 21){
         let card = getRandomCard()
         sum += card
         cards.push(card)
-        renderGame()
+        isNewCardDrawn = true;
     }
+    renderGame()
 }
+
+// GIVES A RANDOM CARD
+
+function getRandomCard() {
+    let randomNumer = Math.floor(Math.random() * 13) + 1
+    return randomNumer
+}
+
+// RENDERS THE GAME ALL OVER AGAIN
+
+function renderGame() {
+    cardsEl.textContent = "Cards: ";
+    for (let i = 0; i < cards.length; i++) {
+        cardsEl.textContent += cards[i] + " ";
+    }
+    console.log(initialCount)
+    sumEl.textContent = "Sum: " + sum;
+    if (sum <= 20) {
+        message = "Do you want to draw a new card?";
+    } else if (sum === 21 && betMoney > 0) {
+        profit = betMoney * 10;
+        addProfit = actualCount + profit;
+        nameEl.textContent = "Manasi: $" + addProfit;
+        message = "Congrats, You've got Blackjack! You can now refresh the page to start a fresh new game.";
+        isGameOver = true;
+    } else {
+        message = "You're out of the game! START AGAIN";
+    }
+    titleEl.textContent = message;
+}
+
+
+
+
+
+
+
